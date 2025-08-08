@@ -48,3 +48,20 @@ export function roundTo2DecimalPlaces(value: number | string): number {
     return Math.round((Number(value) + Number.EPSILON) * 100) / 100;
   throw new Error("Value is not a number or string");
 }
+
+const CURRENCY_FORMATTER = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+  minimumFractionDigits: 2,
+});
+
+// Format currency using the formatter above
+export function formatCurrency(amount: number | string | null) {
+  if (typeof amount === "number") {
+    return CURRENCY_FORMATTER.format(amount);
+  } else if (typeof amount === "string") {
+    return CURRENCY_FORMATTER.format(Number(amount));
+  } else {
+    return "NaN";
+  }
+}
