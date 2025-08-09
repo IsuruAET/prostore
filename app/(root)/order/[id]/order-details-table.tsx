@@ -67,7 +67,7 @@ const OrderDetailsTable = ({
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleApprovePayPalOrder = async (data: any) => {
-    const res = await approvePayPalOrder(order.id, data);
+    const res = await approvePayPalOrder(order.id, { orderId: data.orderID });
 
     if (!res.success) toast.error(res.message);
   };

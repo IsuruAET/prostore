@@ -16,7 +16,8 @@ const LoadingPage = () => {
         src={loader}
         alt="Loading..."
         width={150}
-        height={150}
+        height={0}
+        style={{ height: "auto" }}
         unoptimized
       />
     </div>
