@@ -18,11 +18,16 @@ export const insertProductSchema = z.object({
   description: z
     .string()
     .min(10, "Description must be at least 10 characters long"),
-  stock: z.coerce.number(),
+  stock: z.number(),
   images: z.array(z.string()).min(1, "Product must have at least 1 image"),
   isFeatured: z.boolean(),
   banner: z.string().nullable(),
   price: currency,
+});
+
+// Schema for updating products
+export const updateProductSchema = insertProductSchema.extend({
+  id: z.string().min(1, "Id is required"),
 });
 
 // Schema for sign in user
