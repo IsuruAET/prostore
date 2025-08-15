@@ -11,7 +11,7 @@ import { CartItem, ShippingAddress, PaymentResult, OrderItem } from "@/types";
 import { paypal } from "../paypal";
 import { revalidatePath } from "next/cache";
 import { PAGE_SIZE } from "../constants";
-import { Prisma } from "@prisma/client";
+import { Prisma } from "@/lib/generated/prisma";
 
 // Create Order and Order Items
 export async function createOrder() {
@@ -317,7 +317,7 @@ export async function getOrderSummary() {
 
   // Get monthly sales
   const salesDataRaw = await prisma.$queryRaw<
-    Array<{ month: string; totalSales: Prisma.Decimal }>
+    Array<{ month: string; totalSales: string }>
   >`SELECT to_char("createdAt", 'MM/YY') as "month", sum("totalPrice") as "totalSales" FROM "Order" GROUP BY to_char("createdAt", 'MM/YY')`;
 
   const salesData: SalesDataType = salesDataRaw.map((entry) => ({
@@ -354,22 +354,22 @@ export async function getAllOrders({
   page: number;
   query: string;
 }) {
-  // const queryFilter: Prisma.OrderWhereInput =
-  //   query && query !== "all"
-  //     ? {
-  //         user: {
-  //           name: {
-  //             contains: query,
-  //             mode: "insensitive",
-  //           } as Prisma.StringFilter,
-  //         },
-  //       }
-  //     : {};
+  const queryFilter: Prisma.OrderWhereInput =
+    query && query !== "all"
+      ? {
+          user: {
+            name: {
+              contains: query,
+              mode: "insensitive",
+            },
+          },
+        }
+      : {};
 
   const data = await prisma.order.findMany({
-    // where: {
-    //   ...queryFilter,
-    // },
+    where: {
+      ...queryFilter,
+    },
     orderBy: { createdAt: "desc" },
     take: limit,
     skip: (page - 1) * limit,

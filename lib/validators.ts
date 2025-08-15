@@ -129,6 +129,12 @@ export const paymentResultSchema = z.object({
 
 // Schema for updating the user profile
 export const updateProfileSchema = z.object({
-  name: z.string().min(3, "Name must be at leaast 3 characters"),
+  name: z.string().min(3, "Name must be at least 3 characters"),
   email: z.email({ message: "Invalid email address" }),
+});
+
+// Schema to update users
+export const updateUserSchema = updateProfileSchema.extend({
+  id: z.string().min(1, "ID is required"),
+  role: z.string().min(1, "Role is required"),
 });
