@@ -61,6 +61,7 @@
     "@types/react-dom": "^19",
     "@types/ws": "^8.18.1",
     "bufferutil": "^4.0.9",
+    "critters": "^0.0.23",
     "dotenv": "^17.2.1",
     "eslint": "^9",
     "eslint-config-next": "15.4.5",
