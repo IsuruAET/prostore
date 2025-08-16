@@ -2,9 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   experimental: {
-    optimizeCss: {
-      critters: true,
-    },
+    optimizeCss: {},
     cssChunking: "strict",
   },
   compiler: {
