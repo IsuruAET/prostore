@@ -12,6 +12,7 @@ import { paypal } from "../paypal";
 import { revalidatePath } from "next/cache";
 import { PAGE_SIZE } from "../constants";
 import { Prisma } from "@/lib/generated/prisma";
+import { sendPurchaseReceipt } from "@/email";
 
 // Create Order and Order Items
 export async function createOrder() {
@@ -265,6 +266,15 @@ export async function updateOrderToPaid({
     });
 
     if (!updatedOrder) throw new Error("Order not found");
+
+    await sendPurchaseReceipt({
+      order: {
+        ...updatedOrder,
+        shippingAddress: updatedOrder.shippingAddress as ShippingAddress,
+        paymentResult: updatedOrder.paymentResult as PaymentResult,
+        orderItems: updatedOrder.OrderItem as OrderItem[],
+      },
+    });
   } catch (error) {
     return { success: false, message: formatErrors(error) };
   }
